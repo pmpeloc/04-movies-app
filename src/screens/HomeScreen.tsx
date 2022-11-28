@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { width: windowWidth } = Dimensions.get('window');
 
 export const HomeScreen = () => {
-  const { moviesInCinema: movies, isLoading } = useMovies();
+  const { moviesState, isLoading } = useMovies();
 
   const { top } = useSafeAreaInsets();
 
@@ -28,7 +28,7 @@ export const HomeScreen = () => {
       <View style={{ marginTop: top + 20 }}>
         <View style={{ height: 440 }}>
           <Carousel
-            data={movies}
+            data={moviesState.nowPlaying}
             renderItem={({ item }: any) => <MovieCard movie={item} />}
             sliderWidth={windowWidth}
             itemWidth={300}
@@ -36,7 +36,9 @@ export const HomeScreen = () => {
           />
         </View>
       </View>
-      <HorizontalSlider title="In Cinemas" movies={movies} />
+      <HorizontalSlider title="Populares" movies={moviesState.popular} />
+      <HorizontalSlider title="Top Rated" movies={moviesState.topRated} />
+      <HorizontalSlider title="Upcoming" movies={moviesState.upcoming} />
     </ScrollView>
   );
 };
