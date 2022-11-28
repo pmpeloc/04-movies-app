@@ -1,10 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { Dimensions, View, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Carousel from 'react-native-snap-carousel';
 
 import { MovieCard } from '../components/MovieCard';
 import { useMovies } from '../hooks/useMovies';
+
+const { width: windowWidth } = Dimensions.get('window');
 
 export const HomeScreen = () => {
   const { moviesInCinema, isLoading } = useMovies();
@@ -21,7 +24,14 @@ export const HomeScreen = () => {
 
   return (
     <View style={{ marginTop: top + 20 }}>
-      <MovieCard movie={moviesInCinema[0]} />
+      <View style={{ height: 440 }}>
+        <Carousel
+          data={moviesInCinema}
+          renderItem={({ item }: any) => <MovieCard movie={item} />}
+          sliderWidth={windowWidth}
+          itemWidth={300}
+        />
+      </View>
     </View>
   );
 };
