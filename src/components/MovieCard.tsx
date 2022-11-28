@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Movie } from '../interfaces/movie.interface';
 
@@ -13,12 +14,19 @@ interface Props {
 export const MovieCard = ({ movie, height = 420, width = 300 }: Props) => {
   const uri = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
 
+  const navigation = useNavigation();
+
   return (
-    <View style={{ width, height, marginHorizontal: 8 }}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('DetailScreen' as never, movie as never)
+      }
+      style={{ width, height, marginHorizontal: 8 }}
+      activeOpacity={0.8}>
       <View style={styles.imageContainer}>
         <Image source={{ uri }} style={styles.image} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
