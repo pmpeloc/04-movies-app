@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   View,
@@ -6,11 +7,13 @@ import {
   Dimensions,
   ScrollView,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import { RootStackParams } from '../navigation/Navigation';
+import { useMovieDetails } from '../hooks/useMovieDetails';
+import { MovieDetails } from '../components/MovieDetails';
 
 interface Props extends StackScreenProps<RootStackParams, 'DetailScreen'> {}
 
@@ -19,6 +22,8 @@ const screenHeight = Dimensions.get('screen').height;
 export const DetailScreen = ({ route }: Props) => {
   const movie = route.params;
   const uri = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+
+  const { isLoading, cast, movieDetail } = useMovieDetails(movie.id);
 
   return (
     <ScrollView>
@@ -31,9 +36,11 @@ export const DetailScreen = ({ route }: Props) => {
         <Text style={styles.fontSubtitle}>{movie.original_title}</Text>
         <Text style={styles.fontTitle}>{movie.title}</Text>
       </View>
-      <View style={styles.marginContainer}>
-        <Icon name="star-outline" color="grey" size={20} />
-      </View>
+      {isLoading ? (
+        <ActivityIndicator size={35} color="grey" style={{ marginTop: 20 }} />
+      ) : (
+        <MovieDetails movieDetail={movieDetail!} cast={cast} />
+      )}
     </ScrollView>
   );
 };
